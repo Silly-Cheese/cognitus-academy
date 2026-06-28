@@ -29,3 +29,15 @@ function academyPinStep(){
   }, true);
 }
 setInterval(academyPinStep, 500);
+
+function academyCloseControl(){
+  const modal = document.getElementById('modal');
+  const box = document.querySelector('.modal-box');
+  if (!modal || !box || modal.classList.contains('hidden') || box.querySelector('.modal-close')) return;
+  const button = document.createElement('button');
+  button.className = 'modal-close secondary';
+  button.textContent = 'Close Course';
+  button.addEventListener('click', function(){ modal.classList.add('hidden'); });
+  box.prepend(button);
+}
+setInterval(academyCloseControl, 500);
