@@ -1,6 +1,6 @@
 import './app-v2.js?v=7';
 import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
-import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
 import { premadeCourses } from './courses.js';
 
@@ -76,3 +76,18 @@ function addEmployeeEditButtons(){
   });
 }
 setInterval(addEmployeeEditButtons, 700);
+
+window.openEmployeeEditPrompt = function(id){
+  const displayName = prompt('New display name. Leave blank to keep unchanged.');
+  const department = prompt('New department. Leave blank to keep unchanged.');
+  const role = prompt('New role. Leave blank to keep unchanged.');
+  const status = prompt('New status: Active, Awaiting PIN Setup, Inactive, or Suspended. Leave blank to keep unchanged.');
+  const updates = {updatedAt:serverTimestamp()};
+  if (displayName && displayName.trim()) updates.displayName = displayName.trim();
+  if (department && department.trim()) updates.department = department.trim();
+  if (role && role.trim()) updates.role = role.trim();
+  if (status && status.trim()) updates.status = status.trim();
+  const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  updateDoc(doc(db, 'employees', id), updates).then(function(){ alert('Employee updated. Refresh Staff to see changes.'); }).catch(function(e){ alert('Employee update failed: ' + (e.message || e)); });
+};
