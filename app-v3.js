@@ -76,18 +76,79 @@ function addEmployeeEditButtons(){
   });
 }
 setInterval(addEmployeeEditButtons, 700);
-
 window.openEmployeeEditPrompt = function(id){
-  const displayName = prompt('New display name. Leave blank to keep unchanged.');
-  const department = prompt('New department. Leave blank to keep unchanged.');
-  const role = prompt('New role. Leave blank to keep unchanged.');
-  const status = prompt('New status: Active, Awaiting PIN Setup, Inactive, or Suspended. Leave blank to keep unchanged.');
-  const updates = {updatedAt:serverTimestamp()};
-  if (displayName && displayName.trim()) updates.displayName = displayName.trim();
-  if (department && department.trim()) updates.department = department.trim();
-  if (role && role.trim()) updates.role = role.trim();
-  if (status && status.trim()) updates.status = status.trim();
+  const content = document.getElementById('modalContent');
+  const modal = document.getElementById('modal');
+
+  content.innerHTML = `
+    <h2>Edit Employee</h2>
+    <p class="muted">${id}</p>
+
+    <div class="grid g2">
+      <label class="field">Display Name
+        <input id="eeName" placeholder="Leave blank to keep unchanged">
+      </label>
+
+      <label class="field">Department
+        <input id="eeDepartment" placeholder="Example: Human Resources">
+      </label>
+
+      <label class="field">Role
+        <input id="eeRole" placeholder="Example: Hiring Officer">
+      </label>
+
+      <label class="field">Status
+        <select id="eeStatus">
+          <option value="">Keep unchanged</option>
+          <option>Active</option>
+          <option>Awaiting PIN Setup</option>
+          <option>Inactive</option>
+          <option>Suspended</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="split-actions">
+      <button onclick="saveEmployeeEdit('${id}')">Save Employee</button>
+      <button class="secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+};
+
+window.saveEmployeeEdit = function(id){
+  const updates = { updatedAt: serverTimestamp() };
+
+  const name = document.getElementById('eeName').value.trim();
+  const department = document.getElementById('eeDepartment').value.trim();
+  const role = document.getElementById('eeRole').value.trim();
+  const status = document.getElementById('eeStatus').value;
+
+  if (name) updates.displayName = name;
+  if (department) updates.department = department;
+  if (role) updates.role = role;
+  if (status) updates.status = status;
+
   const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  updateDoc(doc(db, 'employees', id), updates).then(function(){ alert('Employee updated. Refresh Staff to see changes.'); }).catch(function(e){ alert('Employee update failed: ' + (e.message || e)); });
+
+  updateDoc(doc(db, 'employees', id), updates)
+    .then(function(){
+      contentMessage('Employee Updated', 'The employee record was saved.');
+    })
+    .catch(function(e){
+      contentMessage('Save Failed', e.message || String(e));
+    });
 };
+
+function contentMessage(title, message){
+  document.getElementById('modalContent').innerHTML = `
+    <h2>${title}</h2>
+    <p class="muted">${message}</p>
+    <div class="split-actions">
+      <span></span>
+      <button onclick="closeModal()">Okay</button>
+    </div>
+  `;
+}
