@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cognitus Academy</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-card">
+      <h1>COGNITUS ACADEMY</h1>
+      <p>Official Learning, Training & Certification Platform</p>
+      <div id="loginNotice"></div>
+
+      <section id="ownerSetup" class="hidden">
+        <div class="notice"><b>Founder Setup</b><br>No owner account exists. Create the first Owner account below.</div>
+        <label>Display Name<input id="setupDisplay" value="Christopher Shelley" /></label>
+        <label>Discord Username<input id="setupUsername" value="Executive_Eagle" /></label>
+        <label>Discord User ID<input id="setupDiscordId" placeholder="Your numeric Discord ID" /></label>
+        <label>Create 4-Digit PIN<input id="setupPin" maxlength="4" type="password" inputmode="numeric" /></label>
+        <button id="setupBtn">Create Owner & Seed Courses</button>
+      </section>
+
+      <section id="normalLogin">
+        <label>Discord Username<input id="loginUsername" /></label>
+        <label>Discord User ID<input id="loginDiscordId" /></label>
+        <label>4-Digit PIN<input id="loginPin" maxlength="4" type="password" inputmode="numeric" /></label>
+        <button id="loginBtn">Sign In</button>
+        <p class="small">First-time staff accounts create their PIN after the Owner adds them.</p>
+      </section>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside>
+      <div class="brand">COGNITUS ACADEMY</div>
+      <div class="tagline">Learning • Compliance • Certification</div>
+      <nav id="nav"></nav>
+      <div class="profile">
+        <b id="profileName"></b>
+        <span id="profileRole"></span>
+        <span id="profileDept"></span>
+        <button id="logoutBtn" class="secondary">Sign Out</button>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="pageSub"></p>
+        </div>
+        <div id="pageActions"></div>
+      </header>
+      <div id="view"></div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden"><div class="modal-box"><div id="modalContent"></div></div></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
