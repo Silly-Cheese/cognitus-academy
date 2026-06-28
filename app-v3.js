@@ -1,4 +1,8 @@
 import './app-v2.js?v=7';
+import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
+import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
+import { firebaseConfig } from './firebase-config.js';
+import { premadeCourses } from './courses.js';
 
 function academyPinStep(){
   const btn = document.getElementById('loginBtn');
@@ -41,3 +45,20 @@ function academyCloseControl(){
   box.prepend(button);
 }
 setInterval(academyCloseControl, 500);
+
+function extraLessonText(courseTitle){
+  return '\n\nPractical Standard\nThis lesson should be applied in actual Cognitus work, not treated as something to simply click through. Staff should be able to explain the standard, recognize when it applies, and use it consistently.\n\nOperational Example\nIf a staff member is asked to act quickly, the correct response is not to abandon structure. They should still verify authority, protect private information, document important actions, and ask for help when needed.\n\nCommon Mistake to Avoid\nThe most common mistake is assuming small decisions do not need standards. Repeated undocumented actions, unclear communication, or informal exceptions can eventually become major problems.\n\nCognitus Application\nFor '+courseTitle+', connect this lesson to your department, role, and supervisor expectations. If the lesson involves authority, know your limits. If it involves records, know what must be written down. If it involves people, remain fair and professional.\n\nReadiness Check\nBefore moving forward, answer: What is the standard? When does it apply? What should I do if I am unsure?';
+}
+window.seedAgain = async function(){
+  try{
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    for (const c of premadeCourses) {
+      const longCourse = Object.assign({}, c, {lessons:(c.lessons||[]).map(l => Object.assign({}, l, {body:(l.body||'') + extraLessonText(c.title)})), seededVersion:'v3-long-lessons', updatedAt:serverTimestamp()});
+      await setDoc(doc(db, 'courses', c.id), longCourse, {merge:true});
+    }
+    alert('Premade courses updated with longer lessons.');
+  } catch (e) {
+    alert('Seed failed: ' + (e.message || e));
+  }
+};
