@@ -1,4 +1,5 @@
 import './app-v2.js?v=7';
+import './new-hire-tools.js?v=1';
 import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
 import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
