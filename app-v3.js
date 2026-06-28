@@ -62,3 +62,17 @@ window.seedAgain = async function(){
     alert('Seed failed: ' + (e.message || e));
   }
 };
+
+function addEmployeeEditButtons(){
+  if (document.getElementById('pageTitle')?.textContent !== 'Staff') return;
+  const table = document.querySelector('#view table');
+  if (!table || table.dataset.editButtons) return;
+  table.dataset.editButtons = '1';
+  const head = table.querySelector('tr');
+  if (head) head.insertAdjacentHTML('beforeend','<th>Actions</th>');
+  Array.from(table.querySelectorAll('tr')).slice(1).forEach(function(row){
+    const id = row.querySelector('.small')?.textContent?.trim();
+    if (id) row.insertAdjacentHTML('beforeend','<td><button class="secondary" onclick="openEmployeeEditPrompt(\''+id+'\')">Edit</button></td>');
+  });
+}
+setInterval(addEmployeeEditButtons, 700);
