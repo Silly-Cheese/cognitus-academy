@@ -18,14 +18,25 @@ Cognitus Academy is the internal LMS, training, monthly compliance, and certific
 - Executive administration dashboard
 - Black and white Cognitus design
 
-## First setup
+## GitHub Pages deployment
+
+This project is set up to host directly through GitHub Pages. No Firebase Hosting is required.
 
 1. Open `firebase-config.js`.
 2. Replace `PASTE_FIREBASE_API_KEY_HERE` with your Firebase web app API key.
 3. In Firebase Authentication, enable Anonymous sign-in.
-4. In Firestore Database, create the database.
-5. Launch the site.
-6. The first screen creates the Owner account.
+4. In Firestore Database, create the database and publish your Firestore rules.
+5. Commit your changes.
+6. Go to GitHub repository Settings.
+7. Open Pages.
+8. Under Build and deployment, choose Deploy from a branch.
+9. Select branch: `main`.
+10. Select folder: `/root`.
+11. Save.
+
+Your site should publish at:
+
+`https://silly-cheese.github.io/cognitus-academy/`
 
 ## Owner bootstrap
 
