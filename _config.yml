@@ -1,0 +1,13 @@
+exclude:
+  - README.md
+  - app-v2.js
+  - app-v3.js
+  - app.js
+  - courses.js
+  - firebase-config.example.js
+  - firebase-config.js
+  - index.html
+  - new-hire-tools.js
+  - session-tools.js
+  - styles.css
+  - write-test-2.txt
